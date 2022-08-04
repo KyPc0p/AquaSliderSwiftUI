@@ -22,7 +22,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Home: View {
     
-    @State var maxHeight: CGFloat = UIScreen.main.bounds.height / 3
+    @State var maxHeight: CGFloat = UIScreen.main.bounds.height / 2
     
     //Slider cвойства
     @State var sliderProgress: CGFloat = 0
@@ -32,11 +32,8 @@ struct Home: View {
     var body: some View {
         
         NavigationView {
-            
             VStack {
-                
                 //Slider
-                
                 ZStack(alignment: .bottom) {
                     
                     Rectangle()
@@ -47,7 +44,22 @@ struct Home: View {
                         .frame(height: sliderHeight)
                 }
                 .frame(width: 100, height: maxHeight)
-                .cornerRadius(20)
+                .cornerRadius(25)
+                // Конетейнер
+                .overlay(
+                    Text("\(Int(sliderProgress * 100))%")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .padding(.horizontal,18)
+                        .padding(.vertical, 10)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .padding(.vertical, 50)
+                        .offset(y: sliderHeight < maxHeight - 120 ? -sliderHeight : -maxHeight + 120 )
+                        
+                    ,alignment: .bottom
+                    
+                )
                 .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ value in
                         //получаем drag значение
@@ -59,7 +71,12 @@ struct Home: View {
                         
                         //негативное ограничение
                         sliderHeight = sliderHeight >= 0 ? sliderHeight : 0
-                    
+                        
+                        //cохраняем прогресс
+                        let progress = sliderHeight / maxHeight
+                        
+                        sliderProgress = progress <= 1.0 ? sliderProgress : 1
+                        print(sliderProgress)
                         
                     }).onEnded({ value in
                         // ограничиваем высоту слайдера
@@ -70,8 +87,12 @@ struct Home: View {
                         
                         //cохраняем последнее значение
                         lastDragValue = sliderHeight
-                    })
-                )
+                        
+                        //cохраняем прогресс
+                        let progress = sliderHeight / maxHeight
+                        
+                        sliderProgress = progress <= 1.0 ? sliderProgress : 1
+                    }))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color("bg").ignoresSafeArea())
