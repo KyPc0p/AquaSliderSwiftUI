@@ -43,11 +43,11 @@ struct Home: View {
                         .fill(Color("slider"))
                         .frame(height: sliderHeight)
                 }
-                .frame(width: 100, height: maxHeight)
+                .frame(width: 120, height: maxHeight)
                 .cornerRadius(25)
                 // Конетейнер
                 .overlay(
-                    Text("\(Int(sliderProgress * 100))%")
+                    Text("\(Int(sliderProgress * 100 ))ml")
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
                         .padding(.horizontal,18)
@@ -55,7 +55,8 @@ struct Home: View {
                         .background(Color.white)
                         .cornerRadius(10)
                         .padding(.vertical, 50)
-                        .offset(y: sliderHeight < maxHeight - 120 ? -sliderHeight : -maxHeight + 120 )
+//                        .offset(y: sliderHeight < maxHeight - 110 ? -sliderHeight : -maxHeight + 110 )
+                        .offset(y: -sliderHeight)
                         
                     ,alignment: .bottom
                     
@@ -75,7 +76,7 @@ struct Home: View {
                         //cохраняем прогресс
                         let progress = sliderHeight / maxHeight
                         
-                        sliderProgress = progress <= 1.0 ? sliderProgress : 1
+                        sliderProgress = progress <= 1.0 ? progress : 1
                         print(sliderProgress)
                         
                     }).onEnded({ value in
@@ -91,7 +92,7 @@ struct Home: View {
                         //cохраняем прогресс
                         let progress = sliderHeight / maxHeight
                         
-                        sliderProgress = progress <= 1.0 ? sliderProgress : 1
+                        sliderProgress = progress <= 1.0 ? progress : 1
                     }))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
